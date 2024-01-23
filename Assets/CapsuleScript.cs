@@ -2,9 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CapsuleScript : MonoBehaviour
+public class CapsuleScript : MonoBehaviour, I_Interactable
 {
-    // Start is called before the first frame update
+    public void ProcessDrag(Vector2 endPosition)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void processTap()
+    {
+        transform.localScale += new Vector3(1, 1, 1);
+    }
+
+    public void Unselect()
+    {
+        throw new System.NotImplementedException();
+    }
+
     void Start()
     {
         

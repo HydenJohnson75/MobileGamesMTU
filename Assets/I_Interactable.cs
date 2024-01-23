@@ -5,4 +5,7 @@ using UnityEngine;
 interface I_Interactable 
 {
     void processTap();
+
+    void ProcessDrag(Vector2 endPosition);
+    void Unselect();
 }

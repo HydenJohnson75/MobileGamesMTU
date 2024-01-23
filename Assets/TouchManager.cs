@@ -7,6 +7,8 @@ public class TouchManager : MonoBehaviour
     float timer = 0f;
     float MaxTapTime = 0.2f;
     bool hasMoved = false;
+    Vector2 startPosition;
+    Vector2 endPosition;
     GestureActionScript actOn;
     // Start is called before the first frame update
     void Start()
@@ -29,11 +31,15 @@ public class TouchManager : MonoBehaviour
                         {
                             timer = 0f;
                             hasMoved = false;
+                            startPosition = t.position;
                             break;
                         }
                     case TouchPhase.Moved:
                         {
+                            Debug.DrawRay(Camera.main.ScreenPointToRay(t.position).origin, Camera.main.ScreenPointToRay(t.position).direction * 100);
                             hasMoved = true;
+
+                            actOn.DragAt(t.position);
                             break;
                         }
                     case TouchPhase.Stationary:
@@ -43,6 +49,7 @@ public class TouchManager : MonoBehaviour
                         }
                     case TouchPhase.Ended:
                         {
+
                             if ((timer < MaxTapTime) && !hasMoved)
                             {
                                 actOn.TapAt(t.position);
