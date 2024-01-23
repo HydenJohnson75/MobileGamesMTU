@@ -7,19 +7,22 @@ public class CubeScript : MonoBehaviour, I_Interactable
     [SerializeField]
     Material material;
 
-    public void ProcessDrag(Vector2 endPosition)
+    public void ProcessDrag(Ray ray)
     {
-        transform.position = endPosition;
+        float distance = Vector3.Distance(ray.origin, transform.position);
+
+        Vector3 newPosition = new Vector3(ray.GetPoint(distance).x, ray.GetPoint(distance).y, transform.position.z);
+        transform.position = newPosition;
     }
 
     public void processTap()
     {
-        this.GetComponent<Renderer>().material = material;
+        this.GetComponent<Renderer>().material.color = Color.magenta;
     }
 
     public void Unselect()
     {
-        throw new System.NotImplementedException();
+        this.GetComponent<Renderer>().material.color = Color.white;
     }
 
     // Start is called before the first frame update

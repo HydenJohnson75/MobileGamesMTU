@@ -4,25 +4,38 @@ using UnityEngine;
 
 public class SphereScript : MonoBehaviour, I_Interactable
 {
-    public void ProcessDrag(Vector2 endPosition)
+    Rigidbody rb;
+
+    public void ProcessDrag(Ray ray)
     {
-        throw new System.NotImplementedException();
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray, out hit))
+        {
+            if (hit.collider.GetComponent<Terrain>())
+            {
+                transform.position = new Vector3(hit.point.x, hit.point.y + 0.5f, hit.point.z);
+            }
+        }
     }
 
     public void processTap()
     {
-        transform.position += Vector3.up * 10 * Time.deltaTime;
+        this.GetComponent<Renderer>().material.color =  Color.green;
+        rb.isKinematic = true;
     }
 
     public void Unselect()
     {
-        throw new System.NotImplementedException();
+        this.GetComponent<Renderer>().material.color = Color.white;
+        rb.isKinematic = false;
     }
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame

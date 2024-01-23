@@ -36,7 +36,7 @@ public class TouchManager : MonoBehaviour
                         }
                     case TouchPhase.Moved:
                         {
-                            Debug.DrawRay(Camera.main.ScreenPointToRay(t.position).origin, Camera.main.ScreenPointToRay(t.position).direction * 100);
+                            Debug.DrawRay(Camera.main.ScreenPointToRay(t.position).origin, Camera.main.ScreenPointToRay(t.position).direction * 10);
                             hasMoved = true;
 
                             actOn.DragAt(t.position);
@@ -59,23 +59,6 @@ public class TouchManager : MonoBehaviour
                 }
             }
 
-            //foreach (Touch t in Input.touches)
-            //{
-            //    
-            //    if(t.phase == TouchPhase.Stationary && t.phase != TouchPhase.Moved)
-            //    {
-            //        if (timer <= 0 && t.phase == TouchPhase.Ended)
-            //        { 
-            //                print("Tap Working");
-            //                timer = 1f;
-            //        }
-            //        else
-            //        {
-            //            timer -= Time.deltaTime;
-            //        } 
-            //    }
-            //}
-            //print(timer);
         }
 
     }

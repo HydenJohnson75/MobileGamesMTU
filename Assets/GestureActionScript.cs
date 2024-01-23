@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GestureActionScript : MonoBehaviour
 {
@@ -13,8 +14,10 @@ public class GestureActionScript : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(position);
         RaycastHit hit;
+        
         if (Physics.Raycast(ray, out hit))
         {
+            Debug.Log(hit.collider);
             print(hit.collider.gameObject.name);
             
             I_Interactable objectHit = hit.collider.GetComponent<I_Interactable>();
@@ -23,11 +26,16 @@ public class GestureActionScript : MonoBehaviour
                 if(currentlySelectedObj != null)
                 {
                     currentlySelectedObj.Unselect();
-              
+                    currentlySelectedObj = null;
                 }
-                currentlySelectedObj = objectHit;
+                else
+                {
+                    currentlySelectedObj = objectHit;
 
-                objectHit.processTap();
+
+                    objectHit.processTap();        
+                }
+                
             }
             else
             {
@@ -56,7 +64,9 @@ public class GestureActionScript : MonoBehaviour
         //Debug.Log("Start: " + startPosition +  "    End: " + endPosition);
         if(currentlySelectedObj != null)
         {
-            currentlySelectedObj.ProcessDrag(endPosition);
+            Ray ray = Camera.main.ScreenPointToRay(endPosition);
+
+            currentlySelectedObj.ProcessDrag(ray);
         }
 
     }
@@ -70,6 +80,6 @@ public class GestureActionScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        Debug.Log(currentlySelectedObj);
     }
 }

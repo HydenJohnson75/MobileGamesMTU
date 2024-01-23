@@ -4,19 +4,27 @@ using UnityEngine;
 
 public class CapsuleScript : MonoBehaviour, I_Interactable
 {
-    public void ProcessDrag(Vector2 endPosition)
+    public void ProcessDrag(Ray ray)
     {
-        throw new System.NotImplementedException();
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.collider.gameObject.tag == "Plane")
+            {
+                transform.position =  new Vector3(hit.point.x, hit.point.y, transform.position.z);
+            }
+        }
     }
 
     public void processTap()
     {
-        transform.localScale += new Vector3(1, 1, 1);
+        this.GetComponent<Renderer>().material.color = Color.cyan;
     }
 
     public void Unselect()
     {
-        throw new System.NotImplementedException();
+        this.GetComponent<Renderer>().material.color = Color.white;
     }
 
     void Start()
