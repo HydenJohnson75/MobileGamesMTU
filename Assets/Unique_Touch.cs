@@ -3,63 +3,64 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class Unique_Touch : MonoBehaviour
+public class Unique_Touch
 {
 
-    private Touch? touch;
+    internal Touch? touch;
     private float timer;
-    private float MaxTapTime;
-    private Vector2 startPosition;
-    private bool hasMoved;
+    internal float movementTimer;
+    internal float maxMovementTimer = 1f;
+    private float MaxTapTime = 0.3f;
+    internal Vector2 startPosition;
+    internal Vector2 previousPosition;
+    internal bool hasMoved;
     private GestureActionScript actOn;
     internal int touchID { get; set; }
     // Start is called before the first frame update
+
+
+
     void Start()
     {
-        actOn = FindAnyObjectByType<GestureActionScript>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if(touch != null)
+    }
+
+    public void UpdateTouch(Touch t, GestureActionScript act_On)
+    {
+        touch = t;
+
+        switch (touch.Value.phase)
         {
-            
-            switch (touch.Value.phase)
-            {
-                case TouchPhase.Began:
-                    {
-                        timer = 0f;
-                        hasMoved = false;
-                        startPosition = touch.Value.position;
-                        break;
-                    }
-                case TouchPhase.Moved:
-                    {
-                        Debug.DrawRay(Camera.main.ScreenPointToRay(touch.Value.position).origin, Camera.main.ScreenPointToRay(touch.Value.position).direction * 10);
-                        hasMoved = true;
+            case TouchPhase.Began:
+                timer = 0f;
+                startPosition = touch.Value.position;
+                hasMoved = false;
+                break;
 
-                        //actOn.DragAt(touch.Value.position);
-                        break;
-                    }
-                case TouchPhase.Stationary:
-                    {
-                        timer += Time.deltaTime;
-                        break;
-                    }
-                case TouchPhase.Ended:
-                    {
+            case TouchPhase.Moved:
+                Debug.DrawRay(Camera.main.ScreenPointToRay(touch.Value.position).origin, Camera.main.ScreenPointToRay(touch.Value.position).direction * 10);
+                hasMoved = true;
 
-                        if ((timer < MaxTapTime) && !hasMoved)
-                        {
-                            //actOn.TapAt(touch.Value.position);
-                        }
-                        break;
-                    }
-            }
+                act_On.DragAt(touch.Value.position);
+                break;
+
+            case TouchPhase.Stationary:
+                timer += Time.deltaTime;
+                break;
+
+            case TouchPhase.Ended:
+                if (!hasMoved && timer < MaxTapTime)
+                {
+                    act_On.TapAt(touch.Value.position);
+                    Debug.Log("Tap Detected");
+                }
+                break;
         }
-
-        
     }
 }

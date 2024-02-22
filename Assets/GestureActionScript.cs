@@ -59,6 +59,83 @@ public class GestureActionScript : MonoBehaviour
 
     }
 
+    internal void RotateCamera(Unique_Touch t1, Unique_Touch t2)
+    {
+        if (currentlySelectedObj == null)
+        {
+            if (t1 != null && t2 != null)
+            {
+                Vector2 t1StartPos = t1.startPosition;
+                Vector2 t2StartPos = t2.startPosition;
+                Vector2 t1CurPos = t1.touch.Value.position;
+                Vector2 t2CurPos = t2.touch.Value.position;
+
+                Vector2 dirStart = (t2StartPos - t1StartPos).normalized;
+                Vector2 dirCur = (t2CurPos - t1CurPos).normalized;
+
+
+                float startAngle = Mathf.Atan2(dirStart.y, dirStart.x) * Mathf.Rad2Deg;
+                float curAngle = Mathf.Atan2(dirCur.y, dirCur.x) * Mathf.Rad2Deg;
+
+                float rotationAngle = curAngle - startAngle;
+
+                Quaternion targetRotation = Quaternion.Euler(0, 0, startAngle + rotationAngle);
+
+                float rotationSpeed = 0.5f;
+                Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            }
+        }
+
+
+    }
+
+    internal void DragCamera(Unique_Touch t1, Unique_Touch t2)
+    {
+        if(currentlySelectedObj == null)
+        {
+            if (t1 != null && t2 != null)
+            {
+                Vector2 t1StartPos = t1.startPosition;
+                Vector2 t2StartPos = t2.startPosition;
+                Vector2 t1CurrentPos = t1.touch.Value.position;
+                Vector2 t2CurrrentPos = t2.touch.Value.position;
+
+                Vector2 delta1 = t1CurrentPos - t1StartPos;
+                Vector2 delta2 = t2CurrrentPos - t2StartPos;
+
+                Vector2 movement = (delta1 + delta2) * 0.01f; 
+
+                float moveX = movement.x * Time.deltaTime;
+                float moveY = movement.y * Time.deltaTime;
+
+                Camera.main.transform.Translate(new Vector3(moveX, moveY, 0));
+            }
+        }
+    }
+
+    internal void CameraLook(Unique_Touch t1)
+    {
+        if(currentlySelectedObj == null)
+        {
+            if (t1 != null && t1.hasMoved)
+            {
+                float sensitivityY = 0.5f; 
+
+                Vector2 currentPos = t1.touch.Value.position;
+                Vector2 delta = currentPos - t1.previousPosition;
+
+
+                float rotationY = delta.y * sensitivityY; 
+
+                Transform cameraTransform = Camera.main.transform;
+                cameraTransform.Rotate(cameraTransform.right, rotationY); 
+
+                t1.previousPosition = currentPos;
+            }
+        }
+
+    }
+
     internal void DragAt(Vector2 endPosition)
     {
         //Debug.Log("Start: " + startPosition +  "    End: " + endPosition);
