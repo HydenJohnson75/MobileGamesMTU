@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CubeScript : MonoBehaviour, I_Interactable
@@ -25,6 +26,11 @@ public class CubeScript : MonoBehaviour, I_Interactable
         this.GetComponent<Renderer>().material.color = Color.white;
     }
 
+    public void Scale(Vector3 scaleFactor)
+    {
+        transform.localScale += scaleFactor;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,5 +41,10 @@ public class CubeScript : MonoBehaviour, I_Interactable
     void Update()
     {
         
+    }
+
+    public void Rotate(float angle)
+    {
+        transform.Rotate(Vector3.forward, angle);
     }
 }

@@ -22,6 +22,16 @@ public class CapsuleScript : MonoBehaviour, I_Interactable
         this.GetComponent<Renderer>().material.color = Color.cyan;
     }
 
+    public void Rotate(float angle)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Scale(Vector3 scaleFactor)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void Unselect()
     {
         this.GetComponent<Renderer>().material.color = Color.white;

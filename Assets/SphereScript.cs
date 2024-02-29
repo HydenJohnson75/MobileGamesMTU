@@ -25,6 +25,16 @@ public class SphereScript : MonoBehaviour, I_Interactable
         rb.isKinematic = true;
     }
 
+    public void Rotate(float angle)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Scale(Vector3 scaleFactor)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void Unselect()
     {
         this.GetComponent<Renderer>().material.color = Color.white;

@@ -8,4 +8,9 @@ interface I_Interactable
 
     void ProcessDrag(Ray ray);
     void Unselect();
+
+    public void Scale(Vector3 scaleFactor);
+
+    public void Rotate(float angle);
+
 }

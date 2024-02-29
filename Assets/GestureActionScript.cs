@@ -59,7 +59,7 @@ public class GestureActionScript : MonoBehaviour
 
     }
 
-    internal void RotateCamera(Unique_Touch t1, Unique_Touch t2)
+    internal void FingerRotate(Unique_Touch t1, Unique_Touch t2)
     {
         if (currentlySelectedObj == null)
         {
@@ -85,8 +85,84 @@ public class GestureActionScript : MonoBehaviour
                 Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
             }
         }
+        else
+        {
+            Vector2 t1StartPos = t1.startPosition;
+            Vector2 t2StartPos = t2.startPosition;
+            Vector2 t1CurPos = t1.touch.Value.position;
+            Vector2 t2CurPos = t2.touch.Value.position;
+
+            Vector2 dirStart = (t2StartPos - t1StartPos).normalized;
+            Vector2 dirCur = (t2CurPos - t1CurPos).normalized;
+
+            float startAngle = Mathf.Atan2(dirStart.y, dirStart.x) * Mathf.Rad2Deg;
+            float curAngle = Mathf.Atan2(dirCur.y, dirCur.x) * Mathf.Rad2Deg;
+
+            float rotationAngle = curAngle - startAngle;
+
+            currentlySelectedObj.Rotate(rotationAngle);
+        }
 
 
+    }
+
+    internal void FingerMovedDistance(Unique_Touch t1, Unique_Touch t2)
+    {
+        if (currentlySelectedObj == null)
+        {
+            // Zoom the camera
+            ZoomCamera(t1, t2);
+        }
+        else
+        {
+            // Scale the object
+            ScaleObject(t1, t2);
+        }
+    }
+
+    void ZoomCamera(Unique_Touch t1, Unique_Touch t2)
+    {
+        float distance = TouchManager.CalculateDistanceBetweenTouches(t1, t2);
+        float startDistance = Vector2.Distance(t1.startPosition, t2.startPosition);
+
+        float zoomFactor = 0.00001f * distance;
+
+        if (distance > startDistance)
+        {
+            Camera.main.transform.position += Camera.main.transform.forward * zoomFactor;
+        }
+        else
+        {
+            Camera.main.transform.position -= Camera.main.transform.forward * zoomFactor;
+        }
+        // Adjust zoom factor based on the distance between touches
+         // Adjust as needed
+
+        // Apply zoom
+        
+    }
+
+    void ScaleObject(Unique_Touch t1, Unique_Touch t2)
+    {
+        float distance = TouchManager.CalculateDistanceBetweenTouches(t1, t2);
+        float startDistance = Vector2.Distance(t1.startPosition, t2.startPosition);
+        // Adjust scale factor based on the distance between touches
+        float scaleFactor = 0.00001f * distance; // Adjust as needed
+
+        if(t1.hasMoved && t2.hasMoved)
+        {
+            if (distance > startDistance)
+            {
+                currentlySelectedObj.Scale(new Vector3(scaleFactor, scaleFactor, scaleFactor));
+            }
+            else
+            {
+                currentlySelectedObj.Scale(new Vector3(-scaleFactor, -scaleFactor, -scaleFactor));
+            }
+        }
+
+
+        // Apply scale to the object
     }
 
     internal void DragCamera(Unique_Touch t1, Unique_Touch t2)

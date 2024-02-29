@@ -61,12 +61,18 @@ public class TouchManager : MonoBehaviour
                 if (touch1.hasMoved && touch2.hasMoved)
                 {
                     float angle = CalculateAngleBetweenTouches(touch1, touch2);
-
+                    float distance = CalculateDistanceBetweenTouches(touch1, touch2);
                     if (Mathf.Abs(angle) > 20)
                     {
                         isRotating = true;
                         isDragging = false; 
-                        actOn.RotateCamera(touch1, touch2);
+                        actOn.FingerRotate(touch1, touch2);
+                    }
+                    else if (distance > 2)
+                    {
+                        isDragging = true;
+                        isRotating = false; 
+                        actOn.FingerMovedDistance(touch1, touch2);
                     }
                     else
                     {
@@ -95,5 +101,10 @@ public class TouchManager : MonoBehaviour
         float curAngle = Mathf.Atan2(dirCur.y, dirCur.x) * Mathf.Rad2Deg;
 
         return curAngle - startAngle;
+    }
+
+    internal static float CalculateDistanceBetweenTouches(Unique_Touch touch1, Unique_Touch touch2)
+    {
+        return Vector2.Distance(touch1.currentPosition, touch2.currentPosition);
     }
 }

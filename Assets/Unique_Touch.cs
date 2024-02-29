@@ -13,6 +13,7 @@ public class Unique_Touch
     private float MaxTapTime = 0.3f;
     internal Vector2 startPosition;
     internal Vector2 previousPosition;
+    internal Vector2 currentPosition;
     internal bool hasMoved;
     private GestureActionScript actOn;
     internal int touchID { get; set; }
@@ -46,12 +47,14 @@ public class Unique_Touch
             case TouchPhase.Moved:
                 Debug.DrawRay(Camera.main.ScreenPointToRay(touch.Value.position).origin, Camera.main.ScreenPointToRay(touch.Value.position).direction * 10);
                 hasMoved = true;
-
+                currentPosition = touch.Value.position;
                 act_On.DragAt(touch.Value.position);
                 break;
 
             case TouchPhase.Stationary:
                 timer += Time.deltaTime;
+                currentPosition = touch.Value.position;
+                hasMoved = false;
                 break;
 
             case TouchPhase.Ended:
