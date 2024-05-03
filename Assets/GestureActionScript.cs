@@ -224,6 +224,11 @@ public class GestureActionScript : MonoBehaviour
 
     }
 
+    internal void EndGame()
+    {
+        Application.Quit();
+    }
+
     // Start is called before the first frame update
     void Start()
     {

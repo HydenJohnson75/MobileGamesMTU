@@ -19,7 +19,6 @@ public class GyroScript : MonoBehaviour
         RotateObject();
     }
 
-
     private void RotateObject()
     {
         Vector3 tilt = Input.acceleration;

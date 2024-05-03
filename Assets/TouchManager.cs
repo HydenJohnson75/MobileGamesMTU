@@ -43,6 +43,11 @@ public class TouchManager : MonoBehaviour
 
             List<Unique_Touch> activeTouches = touches.FindAll(t => t.touch.HasValue);
 
+            if(activeTouches.Count == 5)
+            {
+                actOn.EndGame();
+            }
+
             if (activeTouches.Count == 1)
             {
                 Unique_Touch touch1 = activeTouches[0];
@@ -82,6 +87,7 @@ public class TouchManager : MonoBehaviour
                     }
                 }
             }
+            
 
         }
         touches.RemoveAll(t => t.touch.HasValue && t.touch.Value.phase == TouchPhase.Ended);
